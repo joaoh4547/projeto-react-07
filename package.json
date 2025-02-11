@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ignite-ui/react": "^2.2.4",
     "@types/node": "22.13.1",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
