@@ -19,7 +19,7 @@ export const FormAnnotation = styled('div', {
     type: {
       error: {
         [`> ${Text}`]: {
-          color: '#ff5577',
+          color: '#f75a68',
         },
       },
       info: {
