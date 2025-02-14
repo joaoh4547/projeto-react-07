@@ -4,6 +4,8 @@ import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const registerUserSchema = z.object({
   username: z
@@ -24,10 +26,19 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { isSubmitting, errors },
   } = useForm<RegisterUserSchema>({
     resolver: zodResolver(registerUserSchema),
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.query?.username) {
+      setValue('username', router.query?.username as string)
+    }
+  }, [router.query?.username, setValue])
 
   async function handleRegisterUser(data: RegisterUserSchema) {
     console.log(data)
