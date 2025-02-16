@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['node_modules/', 'dist/', 'build/'],
+    ignores: ['node_modules/', 'dist/', 'build/', 'src/@types/'],
   },
   ...compat.extends('@rocketseat/eslint-config/react', 'next/core-web-vitals'),
   ...compat.config({
