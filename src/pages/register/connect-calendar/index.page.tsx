@@ -6,7 +6,6 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 export default function Register() {
-  // async function handleRegisterUser(data: RegisterUserSchema) {}
   const session = useSession()
 
   const router = useRouter()
