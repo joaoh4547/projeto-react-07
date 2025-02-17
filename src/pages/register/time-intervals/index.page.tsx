@@ -98,7 +98,6 @@ export default function TimeIntervals() {
   }
 
   const intervals = watch('intervals')
-
   return (
     <Container>
       <Header>
@@ -148,7 +147,7 @@ export default function TimeIntervals() {
           ))}
         </IntervalsContainer>
         {errors.intervals && (
-          <FormError size="sm">{errors.intervals.root?.message}</FormError>
+          <FormError size="sm">{errors.intervals.message}</FormError>
         )}
         <Button type="submit" disabled={isSubmitting}>
           Próximo passo
