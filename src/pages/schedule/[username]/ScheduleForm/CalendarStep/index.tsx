@@ -1,4 +1,4 @@
-import { Calendar } from '../../../../../components'
+import { Calendar } from '../../../../../components/Calendar'
 import {
   Container,
   TimePicker,
@@ -8,7 +8,7 @@ import {
 } from './styles'
 
 export function CalendarStep() {
-  const hasDaySelected = true
+  const hasDaySelected = false
 
   return (
     <Container isTimePickerOpen={hasDaySelected}>
