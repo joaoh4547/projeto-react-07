@@ -3,6 +3,8 @@ import { globalStyes } from '../styles/global'
 import '../lib/dayjs'
 
 import { SessionProvider } from 'next-auth/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { query } from '../lib/react-query'
 
 globalStyes()
 export default function App({
@@ -10,8 +12,10 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <QueryClientProvider client={query}>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </QueryClientProvider>
   )
 }
