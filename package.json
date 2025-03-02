@@ -12,7 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
     "@ignite-ui/react": "^2.2.4",
-    "@prisma/client": "^6.3.1",
+    "@prisma/client": "4.7.1",
     "@tanstack/react-query": "^5.66.11",
     "@types/node": "18.11.14",
     "@types/react": "18.0.26",
@@ -36,6 +36,6 @@
     "@eslint/js": "^9.20.0",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/cookie": "^0.6.0",
-    "prisma": "^6.3.1"
+    "prisma": "4.7.1"
   }
 }
