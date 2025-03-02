@@ -11,10 +11,15 @@ import dayjs from 'dayjs'
 import { api } from '../../../../../lib/axios'
 import { useRouter } from 'next/router'
 
+interface Availability {
+  possibilityTimes: number[]
+  availabilityTimes: number[]
+}
+
 export function CalendarStep() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  const [availability, setAvailability] = useState(null)
+  const [availability, setAvailability] = useState<Availability | null>(null)
 
   const { query } = useRouter()
 
@@ -33,13 +38,13 @@ export function CalendarStep() {
     }
 
     api
-      .get(`/users/${username}/availability`, {
+      .get<Availability>(`/users/${username}/availability`, {
         params: {
           date: dayjs(selectedDate).format('YYYY-MM-DD'),
         },
       })
       .then((response) => {
-        console.log(response.data)
+        setAvailability(response.data)
       })
   }, [selectedDate, username])
   return (
@@ -51,19 +56,16 @@ export function CalendarStep() {
             {weekDay} <span>{dateOfMonth}</span>
           </TimePickerHeader>
           <TimePickerList>
-            <TimePickerItem>08:00h</TimePickerItem>
-            <TimePickerItem disabled>09:00h</TimePickerItem>
-            <TimePickerItem>10:00h</TimePickerItem>
-            <TimePickerItem>11:00h</TimePickerItem>
-            <TimePickerItem>12:00h</TimePickerItem>
-            <TimePickerItem>13:00h</TimePickerItem>
-            <TimePickerItem>14:00h</TimePickerItem>
-            <TimePickerItem>15:00h</TimePickerItem>
-            <TimePickerItem>16:00h</TimePickerItem>
-            <TimePickerItem>17:00h</TimePickerItem>
-            <TimePickerItem>18:00h</TimePickerItem>
-            <TimePickerItem>19:00h</TimePickerItem>
-            <TimePickerItem>20:00h</TimePickerItem>
+            {availability?.possibilityTimes.map((time) => {
+              return (
+                <TimePickerItem
+                  key={time}
+                  disabled={!availability.availabilityTimes.includes(time)}
+                >
+                  {String(time).padStart(2, '0')}:00h
+                </TimePickerItem>
+              )
+            })}
           </TimePickerList>
         </TimePicker>
       )}

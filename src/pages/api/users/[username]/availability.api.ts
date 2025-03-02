@@ -28,7 +28,7 @@ export default async function handle(
   const isPastDate = referenceDate.endOf('day').isBefore(new Date())
 
   if (isPastDate) {
-    return res.json({ availability: [] })
+    return res.json({ possibilityTimes: [], availabilityTimes: [] })
   }
 
   const userAvailability = await prisma.userTimeInterval.findFirst({
@@ -36,7 +36,7 @@ export default async function handle(
   })
 
   if (!userAvailability) {
-    return res.json({ availability: [] })
+    return res.json({ possibilityTimes: [], availabilityTimes: [] })
   }
 
   // eslint-disable-next-line camelcase
