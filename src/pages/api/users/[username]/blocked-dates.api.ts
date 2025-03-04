@@ -18,8 +18,6 @@ export default async function handle(
       .json({ message: "Missing 'date' or 'month' parameter" })
   }
 
-  const monthFormated = month.toString().padStart(2, '0')
-
   const user = await prisma.user.findUnique({ where: { username } })
 
   if (!user) {
@@ -36,22 +34,27 @@ export default async function handle(
   )
 
   const blockedDatesRaw = await prisma.$queryRaw<Array<{ date: number }>>`
-    SELECT 
-      EXTRACT(DAY FROM s.date) AS date,
-      COUNT(s.date) AS amount,
-      ((t.time_end_in_minutes  - t.time_start_in_minutes) / 60) as size
-    FROM schedulings s
-    LEFT JOIN user_time_intervals t on 
-      t.week_day = WEEKDAY(DATE_ADD(s.date, INTERVAL 1 day))
-    WHERE 
-      s.user_id = ${user.id} AND
-      DATE_FORMAT(s.date, '%Y-%m') = ${`${year}-${monthFormated}`}
-    GROUP BY 
-      EXTRACT(DAY FROM s.date),
-      ((t.time_end_in_minutes  - t.time_start_in_minutes) / 60)
-    HAVING amount >= size or size = 0
-  `
+    SELECT
+    EXTRACT(DAY FROM S.DATE)::int AS date,
+    COUNT(S.date),
+    ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
 
+  FROM schedulings S
+
+  LEFT JOIN user_time_intervals UTI
+    ON UTI.week_day = EXTRACT(DOW FROM S.date )
+
+  WHERE S.user_id = ${user.id}
+    AND EXTRACT(YEAR FROM S.date) = ${year}::int
+    AND EXTRACT(MONTH FROM S.date) =  ${month}::int
+
+  GROUP BY EXTRACT(DAY FROM S.DATE),
+    ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
+
+  HAVING
+    COUNT(S.date) >= ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60);
+  `
+  console.log(blockedDatesRaw)
   const blockedDates = blockedDatesRaw.map((i) => i.date)
 
   return res.json({
