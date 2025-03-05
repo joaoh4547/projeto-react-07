@@ -13,8 +13,8 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '../../../../../lib/axios'
 
 interface Availability {
-  possibilityTimes: number[]
-  availabilityTimes: number[]
+  possibleTimes: number[]
+  availableTimes: number[]
 }
 
 interface CalendarStepProps {
@@ -46,6 +46,7 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
         {
           params: {
             date: selectedDateWithoutTime,
+            timezoneOffset: selectedDate ? selectedDate.getTimezoneOffset() : 0,
           },
         },
       )
@@ -70,11 +71,11 @@ export function CalendarStep({ onSelectDateTime }: CalendarStepProps) {
             {weekDay} <span>{dateOfMonth}</span>
           </TimePickerHeader>
           <TimePickerList>
-            {availability?.possibilityTimes.map((time) => {
+            {availability?.possibleTimes.map((time) => {
               return (
                 <TimePickerItem
                   key={time}
-                  disabled={!availability.availabilityTimes.includes(time)}
+                  disabled={!availability.availableTimes.includes(time)}
                   onClick={() => handleSelectTime(time)}
                 >
                   {String(time).padStart(2, '0')}:00h
