@@ -55,7 +55,7 @@ export default async function handle(
     COUNT(S.date) >= ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60);
   `
   console.log(blockedDatesRaw)
-  const blockedDates = blockedDatesRaw.map((i) => i.date)
+  const blockedDates = blockedDatesRaw.map((i) => Number(i.date))
 
   return res.json({
     blockedWeekDays,
